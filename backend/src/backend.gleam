@@ -52,14 +52,36 @@ pub fn main() {
     Error(_) -> panic as "Invalid amount format"
   }
 
+  let assert Ok(res) = sql.find_transactions(db)
+  io.debug(res)
+
+  // let assert Ok(res) =
+  //   sql.insert_transaction(
+  //     db,
+  //     "BE12",
+  //     pog.Date(2025, 01, 31),
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     pog.Date(2025, 01, 31),
+  //     100.0,
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //   )
+  // io.debug(res)
+
   use #(timestamp, lines) <- result.try(csv.consume_line(lines))
   use lines <- result.try(csv.skip_lines(lines, 2))
+
   let transactions =
     list.try_map(lines, fn(line) { transaction.handle_transaction(db, line) })
 
-  let assert Ok(res) = sql.find_transactions(db)
-
-  io.debug(res)
   io.debug(from)
   io.debug(to)
   io.debug(balance)

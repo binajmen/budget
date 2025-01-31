@@ -36,13 +36,14 @@ pub fn insert_transaction(
   arg_14,
   arg_15,
 ) {
-  let decoder = {
+  let decoder =
+  {
     use id <- decode.field(0, decode.int)
     decode.success(InsertTransactionRow(id:))
   }
 
   let query =
-    "insert into transactions (
+  "insert into transactions (
     account,
     booking_date,
     statement_number,
@@ -61,19 +62,19 @@ pub fn insert_transaction(
 ) values (
     $1,  -- account (varchar(50))
     $2,  -- booking_date (date)
-    $3,  -- statement_number (varchar(50))
-    $4,  -- transaction_number (varchar(50))
-    $5,  -- counterparty_account (varchar(50), nullable)
-    $6,  -- counterparty_name (varchar(255), nullable)
-    $7,  -- street_address (varchar(255), nullable)
-    $8,  -- postal_code_city (varchar(100), nullable)
-    $9,  -- transaction_type (varchar(50))
+    $3,  -- statement_number (varchar(5))
+    $4,  -- transaction_number (varchar(10))
+    nullif($5, ''),  -- counterparty_account (varchar(50), nullable)
+    nullif($6, ''),  -- counterparty_name (varchar(255), nullable)
+    nullif($7, ''),  -- street_address (varchar(255), nullable)
+    nullif($8, ''),  -- postal_code_city (varchar(100), nullable)
+    nullif($9, ''),  -- transaction_type (test, nullable)
     $10, -- value_date (date)
     $11, -- amount (decimal(15,2))
     $12, -- currency (char(3))
-    $13, -- bic (varchar(11), nullable)
-    $14, -- country_code (char(2), nullable)
-    $15  -- communications (text, nullable)
+    nullif($13, ''), -- bic (varchar(11), nullable)
+    nullif($14, ''), -- country_code (char(2), nullable)
+    nullif($15, '')  -- communications (text, nullable)
 )
 returning id
 "
@@ -109,13 +110,13 @@ pub type FindTransactionsRow {
     id: Int,
     account: String,
     booking_date: pog.Date,
-    statement_number: String,
-    transaction_number: String,
+    statement_number: Option(String),
+    transaction_number: Option(String),
     counterparty_account: Option(String),
     counterparty_name: Option(String),
     street_address: Option(String),
     postal_code_city: Option(String),
-    transaction_type: String,
+    transaction_type: Option(String),
     value_date: pog.Date,
     amount: Float,
     currency: String,
@@ -136,41 +137,42 @@ pub fn find_transactions(db) {
     use id <- decode.field(0, decode.int)
     use account <- decode.field(1, decode.string)
     use booking_date <- decode.field(2, pog.date_decoder())
-    use statement_number <- decode.field(3, decode.string)
-    use transaction_number <- decode.field(4, decode.string)
+    use statement_number <- decode.field(3, decode.optional(decode.string))
+    use transaction_number <- decode.field(4, decode.optional(decode.string))
     use counterparty_account <- decode.field(5, decode.optional(decode.string))
     use counterparty_name <- decode.field(6, decode.optional(decode.string))
     use street_address <- decode.field(7, decode.optional(decode.string))
     use postal_code_city <- decode.field(8, decode.optional(decode.string))
-    use transaction_type <- decode.field(9, decode.string)
+    use transaction_type <- decode.field(9, decode.optional(decode.string))
     use value_date <- decode.field(10, pog.date_decoder())
     use amount <- decode.field(11, decode.float)
     use currency <- decode.field(12, decode.string)
     use bic <- decode.field(13, decode.optional(decode.string))
     use country_code <- decode.field(14, decode.optional(decode.string))
     use communications <- decode.field(15, decode.optional(decode.string))
-    decode.success(FindTransactionsRow(
-      id:,
-      account:,
-      booking_date:,
-      statement_number:,
-      transaction_number:,
-      counterparty_account:,
-      counterparty_name:,
-      street_address:,
-      postal_code_city:,
-      transaction_type:,
-      value_date:,
-      amount:,
-      currency:,
-      bic:,
-      country_code:,
-      communications:,
-    ))
+    decode.success(
+      FindTransactionsRow(
+        id:,
+        account:,
+        booking_date:,
+        statement_number:,
+        transaction_number:,
+        counterparty_account:,
+        counterparty_name:,
+        street_address:,
+        postal_code_city:,
+        transaction_type:,
+        value_date:,
+        amount:,
+        currency:,
+        bic:,
+        country_code:,
+        communications:,
+      ),
+    )
   }
 
-  let query =
-    "select
+  let query = "select
   *
 from
   transactions

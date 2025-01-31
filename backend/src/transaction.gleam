@@ -1,3 +1,4 @@
+import gleam/io
 import gleam/result
 import gleam/string
 import parsers/amount
@@ -72,7 +73,7 @@ pub fn line_to_transaction(line: String) -> Result(Transaction, String) {
   }
 }
 
-pub fn handle_transaction(pog: pog.Connection, line: String) {
+pub fn handle_transaction(db: pog.Connection, line: String) {
   case line_to_transaction(line) {
     Ok(tx) -> {
       use booking_date <- result.try(date.parse_date(tx.booking_date))
@@ -80,7 +81,7 @@ pub fn handle_transaction(pog: pog.Connection, line: String) {
 
       case
         sql.insert_transaction(
-          pog,
+          db,
           tx.account,
           booking_date,
           tx.statement_number,
