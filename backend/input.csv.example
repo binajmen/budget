@@ -1,0 +1,16 @@
+Date de comptabilisation à partir de;01/01/2000
+Date de comptabilisation jusqu'au;29/01/2025
+Montant à partir de;
+Montant jusqu'à;
+Numéro d'extrait à partir de;
+Numéro d'extrait jusqu'au;
+Communication;
+Nom contrepartie contient;
+Compte contrepartie;
+Dernier solde;3.119,05 EUR
+Date/heure du dernier solde;29/01/2025 20:06:10
+;
+Compte;Date de comptabilisation;Numéro d'extrait;Numéro de transaction;Compte contrepartie;Nom contrepartie contient;Rue et numéro;Code postal et localité;Transaction;Date valeur;Montant;Devise;BIC;Code pays;Communications
+BE12 3456 7890 1234;28/01/2025;;;;ALICE;;1040;BANCONTACT;28/01/2025;-10,00;EUR;;BE;BANCONTACT
+BE12 3456 7890 1234;27/01/2025;;;;BOB;;1050;BANCONTACT;28/01/2025;-10,00;EUR;;BE;BANCONTACT
+BE12 3456 7890 1234;26/01/2025;;;;CHARLIE;;1020;BANCONTACT;28/01/2025;-10,00;EUR;;BE;BANCONTACT
